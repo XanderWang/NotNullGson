@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: "maven"
+apply plugin: 'com.novoda.bintray-release'
+
+
+dependencies {
+    // gson
+    implementation "com.google.code.gson:gson:2.8.6"
+}
+
+// git项目的地址
+def _siteUrl = 'https://github.com/XanderWang/NotNullGson'
+// git的路径
+def _gitUrl = 'https://github.com/XanderWang/NotNullGson.git'
+// group
+def _group = 'com.xander.notnullgson'
+def _artifactId = 'notnullgson'
+def _version = rootProject.ext.lib_publish_version
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: uri("${rootProject.ext.local_repo_path}"))
+        pom.groupId = _group
+        pom.artifactId = _artifactId
+        pom.version = "$_version"
+    }
+}
+
+publish {
+    // 各个字段的含义见 https://github.com/novoda/bintray-release/wiki/Configuration-of-the-publish-closure
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def user = properties.getProperty('BINTRAY_USER', 'xanderwang')
+    def key = properties.getProperty('BINTRAY_KEY', 'xxx')
+    userOrg = user
+    repoName = 'maven'
+    groupId = _group
+    artifactId = _artifactId
+    publishVersion = _version
+    dryRun = false
+    desc = 'a lib for android , it can check app performance'
+    website = _siteUrl
+    bintrayUser = user
+    bintrayKey = key
+}
