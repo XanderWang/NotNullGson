@@ -1,4 +1,4 @@
-package com.xander.notnullgson;
+package io.github.xanderwang.notnullgson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

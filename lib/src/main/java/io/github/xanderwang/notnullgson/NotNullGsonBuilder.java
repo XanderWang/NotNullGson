@@ -1,4 +1,4 @@
-package com.xander.notnullgson;
+package io.github.xanderwang.notnullgson;
 
 import com.google.gson.internal.bind.NotNullAdapterFactory;
 import com.google.gson.internal.bind.NotNullArrayAdapterFactory;
@@ -14,7 +14,7 @@ import com.google.gson.internal.ConstructorConstructor;
 public class NotNullGsonBuilder {
 
   public static GsonBuilder builder() {
-    return builder(false);
+    return builder(true);
   }
 
   public static GsonBuilder builder(boolean applyNotNull) {
