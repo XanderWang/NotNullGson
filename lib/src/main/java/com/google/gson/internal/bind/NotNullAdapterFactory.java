@@ -9,6 +9,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import io.github.xanderwang.notnullgson.NullListener;
+
 public class NotNullAdapterFactory implements TypeAdapterFactory {
 
   @Override
@@ -28,7 +30,17 @@ public class NotNullAdapterFactory implements TypeAdapterFactory {
 
 }
 
-class NotNullStringAdapter extends TypeAdapter<String> {
+abstract class BaseTypeAdapter<T> extends TypeAdapter<T> {
+
+  NullListener nullListener;
+
+  public BaseTypeAdapter() {
+
+  }
+
+}
+
+class NotNullStringAdapter extends BaseTypeAdapter<String> {
 
   @Override
   public void write(JsonWriter out, String value) throws IOException {
@@ -69,7 +81,7 @@ class NotNullBooleanAdapter extends TypeAdapter<Boolean> {
       return Boolean.FALSE;
     }
     if (next == JsonToken.NUMBER) {
-      return in.nextInt() > 0;
+      return in.nextDouble() > 0;
     }
     if (next == JsonToken.STRING) {
       return Integer.parseInt(in.nextString()) > 0;
