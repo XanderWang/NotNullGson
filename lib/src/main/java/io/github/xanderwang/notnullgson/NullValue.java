@@ -1,12 +1,11 @@
 package io.github.xanderwang.notnullgson;
 
 public class NullValue {
-  private String  defStr    = "";
-  private Integer defInt    = 0;
-  private Long    defLong   = 0L;
-  private Float   defFloat  = 0F;
-  private Double  defDouble = 0D;
-  // private
+  private String  defStr     = "";
+  private Integer defInt     = 0;
+  private Long    defLong    = 0L;
+  private Float   defFloat   = 0F;
+  private Boolean defBoolean = Boolean.FALSE;
 
   public String getDefStr() {
     return defStr;
@@ -52,14 +51,11 @@ public class NullValue {
     this.defFloat = defFloat;
   }
 
-  public Double getDefDouble() {
-    return defDouble;
+  public Boolean getDefBoolean() {
+    return defBoolean;
   }
 
-  public void setDefDouble(Double defDouble) {
-    if (null == defDouble) {
-      return;
-    }
-    this.defDouble = defDouble;
+  public void setDefBoolean(Boolean defBoolean) {
+    this.defBoolean = defBoolean;
   }
 }

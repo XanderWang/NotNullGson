@@ -13,7 +13,7 @@ dependencies {
 // group
 def _groupId = 'io.github.xanderwang'
 def _artifactId = 'notnullgson'
-def _version = rootProject.ext.lib_publish_version
+def _version = "0.2.1"
 
 // 需要上传的文件，先定义好，后续要用
 def _libFile = "${project.buildDir.absolutePath}/libs/lib.jar"

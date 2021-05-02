@@ -13,14 +13,14 @@ public class NotNullGsonTest {
   public static void main(String[] args) {
     GsonBuilder builder = NotNullGsonBuilder.builder();
     Gson gson = builder.create();
-    String jsonStr = "{\"ii\":0,\"ll\":null,\"name\":null,\"addrs\":[\"1\",\"2\",\"3\"]}";
+    String jsonStr = "{\"ii\":1.3,\"ll\":null,\"name\":null,\"addrs\":null}";
     Demo newDemo = gson.fromJson(jsonStr, Demo.class);
     System.out.println(newDemo);
   }
 
   public static class Demo {
 
-    int ii;
+    Boolean ii;
     Long ll = 1L;
     String name;
     List<String> addrs;

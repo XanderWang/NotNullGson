@@ -3,6 +3,7 @@ package io.github.xanderwang.notnullgson;
 import com.google.gson.internal.bind.NotNullAdapterFactory;
 import com.google.gson.internal.bind.NotNullArrayAdapterFactory;
 import com.google.gson.internal.bind.NotNullCollectionTypeAdapterFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -18,6 +19,10 @@ public class NotNullGsonBuilder {
   }
 
   public static GsonBuilder builder(boolean applyNotNull) {
+    return builder(applyNotNull, null);
+  }
+
+  public static GsonBuilder builder(boolean applyNotNull, NullParser nullParser) {
     GsonBuilder gsonBuilder = new GsonBuilder();
     if (!applyNotNull) {
       return gsonBuilder;
@@ -26,12 +31,13 @@ public class NotNullGsonBuilder {
     try {
       fieldInstanceCreators = GsonBuilder.class.getDeclaredField("instanceCreators");
       fieldInstanceCreators.setAccessible(true);
-      Map<Type, InstanceCreator<?>> map = (Map<Type, InstanceCreator<?>>) fieldInstanceCreators.get(gsonBuilder);
+      Map<Type, InstanceCreator<?>> map = (Map<Type, InstanceCreator<?>>) fieldInstanceCreators.get(
+          gsonBuilder);
       ConstructorConstructor constructorConstructor = new ConstructorConstructor(map);
       gsonBuilder
           .registerTypeAdapterFactory(new NotNullCollectionTypeAdapterFactory(constructorConstructor))
           .registerTypeAdapterFactory(new NotNullArrayAdapterFactory())
-          .registerTypeAdapterFactory(new NotNullAdapterFactory());
+          .registerTypeAdapterFactory(new NotNullAdapterFactory(nullParser));
     } catch (Exception e) {
       e.printStackTrace();
     }

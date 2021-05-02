@@ -23,6 +23,7 @@ public class NotNullCollectionTypeAdapterFactory implements TypeAdapterFactory {
     this.constructorConstructor = constructorConstructor;
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   @Override
   public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
     Type type = typeToken.getType();
@@ -36,20 +37,29 @@ public class NotNullCollectionTypeAdapterFactory implements TypeAdapterFactory {
     TypeAdapter<?> elementTypeAdapter = gson.getAdapter(TypeToken.get(elementType));
     ObjectConstructor<T> constructor = constructorConstructor.get(typeToken);
 
-    @SuppressWarnings({"unchecked", "rawtypes"}) // create() doesn't define a type parameter
-        TypeAdapter<T> result = new Adapter(gson, elementType, elementTypeAdapter, constructor);
+    // create() doesn't define a type parameter
+    TypeAdapter<T> result = new Adapter(
+        gson,
+        elementType,
+        elementTypeAdapter,
+        constructor
+    );
     return result;
   }
 
   private static final class Adapter<E> extends TypeAdapter<Collection<E>> {
 
     private final TypeAdapter<E> elementTypeAdapter;
+
     private final ObjectConstructor<? extends Collection<E>> constructor;
 
     public Adapter(Gson context, Type elementType, TypeAdapter<E> elementTypeAdapter,
         ObjectConstructor<? extends Collection<E>> constructor) {
-      this.elementTypeAdapter = new TypeAdapterRuntimeTypeWrapper<E>(context, elementTypeAdapter,
-          elementType);
+      this.elementTypeAdapter = new TypeAdapterRuntimeTypeWrapper<E>(
+          context,
+          elementTypeAdapter,
+          elementType
+      );
       this.constructor = constructor;
     }
 
@@ -60,7 +70,6 @@ public class NotNullCollectionTypeAdapterFactory implements TypeAdapterFactory {
         in.nextNull();
         return collection;
       }
-
       in.beginArray();
       while (in.hasNext()) {
         E instance = elementTypeAdapter.read(in);
@@ -76,7 +85,6 @@ public class NotNullCollectionTypeAdapterFactory implements TypeAdapterFactory {
         out.nullValue();
         return;
       }
-
       out.beginArray();
       for (E element : collection) {
         elementTypeAdapter.write(out, element);

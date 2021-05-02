@@ -29,8 +29,11 @@ public class NotNullArrayAdapterFactory implements TypeAdapterFactory {
 
     Type componentType = $Gson$Types.getArrayComponentType(type);
     TypeAdapter<?> componentTypeAdapter = gson.getAdapter(TypeToken.get(componentType));
-    return new NotNullArrayTypeAdapter(gson, componentTypeAdapter,
-        $Gson$Types.getRawType(componentType));
+    return new NotNullArrayTypeAdapter(
+        gson,
+        componentTypeAdapter,
+        $Gson$Types.getRawType(componentType)
+    );
   }
 }
 
@@ -39,13 +42,16 @@ public class NotNullArrayAdapterFactory implements TypeAdapterFactory {
  */
 class NotNullArrayTypeAdapter<E> extends TypeAdapter<Object> {
 
-  private final Class<E> componentType;
+  private final Class<E>       componentType;
   private final TypeAdapter<E> componentTypeAdapter;
 
   public NotNullArrayTypeAdapter(Gson context, TypeAdapter<E> componentTypeAdapter,
       Class<E> componentType) {
-    this.componentTypeAdapter = new TypeAdapterRuntimeTypeWrapper<E>(context, componentTypeAdapter,
-        componentType);
+    this.componentTypeAdapter = new TypeAdapterRuntimeTypeWrapper<E>(
+        context,
+        componentTypeAdapter,
+        componentType
+    );
     this.componentType = componentType;
   }
 
